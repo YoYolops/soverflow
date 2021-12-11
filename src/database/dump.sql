@@ -10,7 +10,8 @@ CREATE TABLE "tags" (
 
 CREATE TABLE "questions" (
 	"id" serial NOT NULL,
-	"user_id" int NOT NULL,
+	"student" TEXT NOT NULL,
+	"class" TEXT NOT NULL,
 	"question" TEXT NOT NULL,
 	"submit_at" DATE NOT NULL DEFAULT 'NOW()',
 	"answer_id" int,
@@ -67,8 +68,7 @@ CREATE TABLE "classes" (
 
 
 
-ALTER TABLE "questions" ADD CONSTRAINT "questions_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("id");
-ALTER TABLE "questions" ADD CONSTRAINT "questions_fk1" FOREIGN KEY ("answer_id") REFERENCES "answers"("id");
+ALTER TABLE "questions" ADD CONSTRAINT "questions_fk0" FOREIGN KEY ("answer_id") REFERENCES "answers"("id");
 
 ALTER TABLE "tags_group" ADD CONSTRAINT "tags_group_fk0" FOREIGN KEY ("tag_id") REFERENCES "tags"("id");
 ALTER TABLE "tags_group" ADD CONSTRAINT "tags_group_fk1" FOREIGN KEY ("question_id") REFERENCES "questions"("id");
