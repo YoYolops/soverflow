@@ -1,7 +1,11 @@
 import UnformattedDataError from '../errors/UnformattedDataError';
+import NotFoundError from '../errors/NotFoundError';
+import ConflictError from '../errors/ConflictError';
 
-async function errorIsKnown(error: Error) {
-    if (error instanceof UnformattedDataError) return true;
+function errorIsKnown(error: any) {
+    if (error instanceof UnformattedDataError
+        || error instanceof NotFoundError
+        || error instanceof ConflictError) return true;
     return false;
 }
 

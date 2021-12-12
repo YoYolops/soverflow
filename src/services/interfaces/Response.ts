@@ -2,6 +2,10 @@ export interface PostQuestion {
     id: number,
 };
 
+export interface PostUser {
+    token: string,
+}
+
 export interface UnansweredQuestion {
     question: string,
     student: string,

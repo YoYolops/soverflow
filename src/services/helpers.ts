@@ -1,7 +1,9 @@
 import Question from '../interfaces/Question';
 import Tag from '../repositories/interfaces/Tag';
+import Class from '../repositories/interfaces/Class';
 import questionRepository from '../repositories/questionRepository';
 import * as Response from './interfaces/Response';
+import userRepository from '../repositories/userRepository';
 
 /*
     Since tags cannot be repeated and the user can inform one never seen before,
@@ -68,9 +70,20 @@ async function questionResponseFormatter(questionBody: Question, tagsArray: Tag[
     };
 }
 
+/* It only register a class if it is not registered yet */
+async function handleClassRegistration(className: string): Promise<Class> {
+    const formattedClassName = className.toUpperCase();
+    const foundClassName = await userRepository.findClassByName(formattedClassName);
+    if (foundClassName) return foundClassName;
+
+    const classNameRegistration = await userRepository.createClass({ name: formattedClassName });
+    return classNameRegistration;
+}
+
 export default {
     registerMultipleTagsWithoutRepetition,
     questionResponseFormatter,
     parseDateToString,
     parseTagsArrayToString,
+    handleClassRegistration,
 };

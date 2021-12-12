@@ -7,8 +7,14 @@ const question = Joi.object({
     tags: Joi.string().required(),
 });
 
+const user = Joi.object({
+    name: Joi.string().required(),
+    class: Joi.string().required(),
+});
+
 const schema = {
     question,
+    user,
 };
 
 export default schema;

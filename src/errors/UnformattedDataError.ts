@@ -3,6 +3,7 @@ class UnformattedDataError extends Error {
 
     constructor(message: string) {
         super(message);
+        Object.setPrototypeOf(this, UnformattedDataError.prototype);
         this.name = 'Unformatted Data';
         this.statusCode = 422;
     }
