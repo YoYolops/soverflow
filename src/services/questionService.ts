@@ -3,8 +3,9 @@ import Question from '../interfaces/Question';
 import schema from '../schemas/schemas';
 import UnformattedDataError from '../errors/UnformattedDataError';
 import helper from './helpers';
+import * as Response from './interfaces/Response';
 
-async function openQuestion(questionBody: Question): Promise<Question> {
+async function openQuestion(questionBody: Question): Promise<Response.PostQuestion> {
     if (schema.question.validate(questionBody).error) throw new UnformattedDataError('Missing one or more fields');
 
     const { tags } = questionBody;
@@ -25,7 +26,7 @@ async function openQuestion(questionBody: Question): Promise<Question> {
     }));
     await Promise.all(tagsGroupPromise);
 
-    return openedQuestion;
+    return { id: openedQuestion.id };
 }
 
 export default {

@@ -13,7 +13,7 @@ async function createQuestion(req: Request, res: Response, next: NextFunction) {
 
     try {
         const response = await questionService.openQuestion(req.body);
-        return res.status(201).send({ id: response.id });
+        return res.status(201).send(response);
     } catch (error) {
         if (helpers.errorIsKnown(error)) return res.status(error.statusCode).send(error.message);
         return next(error);
