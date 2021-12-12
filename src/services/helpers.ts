@@ -1,5 +1,7 @@
+import Question from '../interfaces/Question';
 import Tag from '../repositories/interfaces/Tag';
 import questionRepository from '../repositories/questionRepository';
+import * as Response from './interfaces/Response';
 
 /*
     Since tags cannot be repeated and the user can inform one never seen before,
@@ -19,6 +21,56 @@ async function registerMultipleTagsWithoutRepetition(tagsArray: string[]): Promi
     return registeredTags;
 }
 
+function parseTagsArrayToString(tagsArray: Tag[]): string {
+    let tagString = '';
+    tagsArray.forEach((tag, index, arr) => {
+        if (index === arr.length - 1) {
+            tagString += tag.name;
+        } else {
+            tagString += `${tag.name}, `;
+        }
+    });
+
+    return tagString;
+}
+
+function parseDateToString(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toISOString().replace(/T/, ' ').replace(/\..+/, '');
+}
+
+/*
+    In GET /question/:id there are multiples response types based on wheter
+    it's an answered or unanswered question. The function below will define
+    wich formmating the user must receive and format it.
+*/
+async function questionResponseFormatter(questionBody: Question, tagsArray: Tag[])
+    : Promise<Response.AnsweredQuestion | Response.UnansweredQuestion> {
+    const { answerId } = questionBody;
+    const baseData = {
+        question: questionBody.question,
+        student: questionBody.student,
+        class: questionBody.class,
+        submitAt: parseDateToString(questionBody.submitAt),
+        answered: !!answerId, // Since primary key auto incremented never is 0 there'll be no danger
+        tags: parseTagsArrayToString(tagsArray),
+    };
+    if (!answerId) return baseData;
+
+    const answerData = await questionRepository.findAnswerById(answerId);
+    const userData = await questionRepository.findUserById(answerData.submitBy);
+
+    return {
+        ...baseData,
+        answeredAt: parseDateToString(answerData.submitAt),
+        answeredBy: userData.name,
+        answer: answerData.answer,
+    };
+}
+
 export default {
     registerMultipleTagsWithoutRepetition,
+    questionResponseFormatter,
+    parseDateToString,
+    parseTagsArrayToString,
 };

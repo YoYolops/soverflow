@@ -2,6 +2,8 @@ import connection from '../database/connection';
 import Question from '../interfaces/Question';
 import Tag from './interfaces/Tag';
 import TagGroup from './interfaces/TagGroup';
+import Answer from './interfaces/Answer';
+import User from './interfaces/User';
 
 async function registerTag(tag: string): Promise<Tag> {
     const createdTag = await connection.query('INSERT INTO tags (name) VALUES ($1) RETURNING *;', [tag]);
@@ -35,9 +37,49 @@ async function registerQuestion(questionBody: Question): Promise<Question> {
     return createdQuestion.rows[0];
 }
 
+async function findQuestionById(questionId: number): Promise<Question> {
+    const foundQuestion = await connection.query(
+        'SELECT id, student, class, question, submit_at AS "submitAt", answer_id AS "answerId" FROM questions WHERE id = $1',
+        [questionId],
+    );
+
+    return foundQuestion.rows[0];
+}
+
+async function findAnswerById(answerId: number): Promise<Answer> {
+    const foundAnswer = await connection.query(
+        'SELECT id, answer, submit_at AS "submitAt", submit_by as "submitBy" FROM answers WHERE id = $1',
+        [answerId],
+    );
+
+    return foundAnswer.rows[0];
+}
+
+async function findUserById(userId: number): Promise<User> {
+    const userFound = await connection.query(
+        'SELECT id, name, token, class_id AS classId FROM users WHERE id = $1',
+        [userId],
+    );
+
+    return userFound.rows[0];
+}
+
+async function getAllTagsFromQuestionId(questionId: number): Promise<Tag[]> {
+    const tagsFound = await connection.query(
+        'SELECT * FROM tags WHERE id IN (SELECT tag_id FROM tags_group WHERE question_id = $1)',
+        [questionId],
+    );
+
+    return tagsFound.rows;
+}
+
 export default {
     registerTag,
     findTagByName,
     registerTagGroup,
     registerQuestion,
+    findQuestionById,
+    findAnswerById,
+    findUserById,
+    getAllTagsFromQuestionId,
 };

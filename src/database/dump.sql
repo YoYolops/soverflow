@@ -13,7 +13,7 @@ CREATE TABLE "questions" (
 	"student" TEXT NOT NULL,
 	"class" TEXT NOT NULL,
 	"question" TEXT NOT NULL,
-	"submit_at" DATE NOT NULL DEFAULT 'NOW()',
+	"submit_at" timestamp with time zone NOT NULL DEFAULT 'NOW()',
 	"answer_id" int,
 	CONSTRAINT "questions_pk" PRIMARY KEY ("id")
 ) WITH (
@@ -36,7 +36,7 @@ CREATE TABLE "tags_group" (
 CREATE TABLE "answers" (
 	"id" serial NOT NULL,
 	"answer" TEXT NOT NULL,
-	"submit_at" DATE NOT NULL DEFAULT 'NOW()',
+	"submit_at" timestamp with time zone NOT NULL DEFAULT 'NOW()',
 	"submit_by" int NOT NULL,
 	CONSTRAINT "answers_pk" PRIMARY KEY ("id")
 ) WITH (

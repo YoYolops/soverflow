@@ -2,6 +2,7 @@ import questionRepository from '../repositories/questionRepository';
 import Question from '../interfaces/Question';
 import schema from '../schemas/schemas';
 import UnformattedDataError from '../errors/UnformattedDataError';
+import NotFoundError from '../errors/NotFoundError';
 import helper from './helpers';
 import * as Response from './interfaces/Response';
 
@@ -29,6 +30,22 @@ async function openQuestion(questionBody: Question): Promise<Response.PostQuesti
     return { id: openedQuestion.id };
 }
 
+async function searchQuestion(questionId: number)
+    : Promise<Response.AnsweredQuestion | Response.UnansweredQuestion> {
+    const questionFoundPromise = questionRepository.findQuestionById(questionId);
+    const tagsFromQuestionPromise = questionRepository.getAllTagsFromQuestionId(questionId);
+    const [questionFound, tagsFromQuestion] = await Promise.all([
+        questionFoundPromise,
+        tagsFromQuestionPromise,
+    ]);
+
+    if (!questionFound) throw new NotFoundError('The informed question id does not exist');
+
+    const formattedData = helper.questionResponseFormatter(questionFound, tagsFromQuestion);
+    return formattedData;
+}
+
 export default {
     openQuestion,
+    searchQuestion,
 };

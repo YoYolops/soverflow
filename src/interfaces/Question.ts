@@ -7,5 +7,6 @@ export default interface Question {
     answered?: boolean,
     submitAt?: string,
     answeredAt?: string,
-    answeredBy: string,
+    answeredBy?: string,
+    answerId?: number,
 };
