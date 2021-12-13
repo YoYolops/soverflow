@@ -60,7 +60,7 @@ async function questionResponseFormatter(questionBody: Question, tagsArray: Tag[
     if (!answerId) return baseData;
 
     const answerData = await questionRepository.findAnswerById(answerId);
-    const userData = await questionRepository.findUserById(answerData.submitBy);
+    const userData = await userRepository.findUserById(answerData.submitBy);
 
     return {
         ...baseData,

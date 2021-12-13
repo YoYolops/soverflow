@@ -5,6 +5,8 @@ import UnformattedDataError from '../errors/UnformattedDataError';
 import NotFoundError from '../errors/NotFoundError';
 import helper from './helpers';
 import * as Response from './interfaces/Response';
+import Answer from '../repositories/interfaces/Answer';
+import MethodNotAllowedError from '../errors/MethodNotAllowedError';
 
 async function openQuestion(questionBody: Question): Promise<Response.PostQuestion> {
     if (schema.question.validate(questionBody).error) throw new UnformattedDataError('Missing one or more fields');
@@ -55,8 +57,22 @@ async function searchAllUnansweredQuestions(): Promise<Response.UnansweredQuesti
     return formattedUnansweredQuestions;
 }
 
+async function updateQuestionAsAnwered(answer: Answer, questionId: number): Promise<Question> {
+    const isQuestionAnswered = await questionRepository.isQuestionAlreadyAnswered(questionId);
+    if (isQuestionAnswered) throw new MethodNotAllowedError('This question is already answered');
+
+    const answerCreated = await questionRepository.createAnswer(answer);
+    const updatedQuestion = await questionRepository.setQuestionAsAnswered(
+        questionId,
+        answerCreated.id,
+    );
+
+    return updatedQuestion;
+}
+
 export default {
     openQuestion,
     searchQuestion,
     searchAllUnansweredQuestions,
+    updateQuestionAsAnwered,
 };

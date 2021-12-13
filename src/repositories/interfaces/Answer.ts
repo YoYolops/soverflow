@@ -1,6 +1,6 @@
 export default interface Answer {
-    id: number,
+    id?: number,
     answer: string,
-    submitAt: string,
+    submitAt?: string,
     submitBy: number,
 };

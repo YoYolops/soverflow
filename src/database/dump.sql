@@ -13,7 +13,7 @@ CREATE TABLE "questions" (
 	"student" TEXT NOT NULL,
 	"class" TEXT NOT NULL,
 	"question" TEXT NOT NULL,
-	"submit_at" timestamp with time zone NOT NULL DEFAULT 'NOW()',
+	"submit_at" TIMESTAMP NOT NULL DEFAULT NOW(),
 	"answer_id" int,
 	CONSTRAINT "questions_pk" PRIMARY KEY ("id")
 ) WITH (
@@ -36,7 +36,7 @@ CREATE TABLE "tags_group" (
 CREATE TABLE "answers" (
 	"id" serial NOT NULL,
 	"answer" TEXT NOT NULL,
-	"submit_at" timestamp with time zone NOT NULL DEFAULT 'NOW()',
+	"submit_at" TIMESTAMP NOT NULL DEFAULT NOW(),
 	"submit_by" int NOT NULL,
 	CONSTRAINT "answers_pk" PRIMARY KEY ("id")
 ) WITH (
@@ -76,3 +76,10 @@ ALTER TABLE "tags_group" ADD CONSTRAINT "tags_group_fk1" FOREIGN KEY ("question_
 ALTER TABLE "answers" ADD CONSTRAINT "answers_fk0" FOREIGN KEY ("submit_by") REFERENCES "users"("id");
 
 ALTER TABLE "users" ADD CONSTRAINT "users_fk0" FOREIGN KEY ("class_id") REFERENCES "classes"("id");
+
+
+
+
+
+
+

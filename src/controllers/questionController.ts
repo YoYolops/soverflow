@@ -43,8 +43,29 @@ async function getUnansweredQuestions(req: Request, res: Response, next: NextFun
     }
 }
 
+async function setQuestionAsAnswered(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+    const questionId = Number(id);
+    if (!questionId) return res.status(400).send('Invalid id');
+
+    const { answer, user } = req.body;
+    if (!answer) return res.status(400).send('Invalid body data');
+
+    try {
+        await questionService.updateQuestionAsAnwered(
+            { answer, submitBy: user.id },
+            questionId,
+        );
+        return res.sendStatus(201);
+    } catch (error) {
+        if (helper.errorIsKnown(error)) return res.status(error.statusCode).send(error.message);
+        return next(error);
+    }
+}
+
 export default {
     createQuestion,
     getQuestionById,
     getUnansweredQuestions,
+    setQuestionAsAnswered,
 };

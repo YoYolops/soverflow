@@ -34,6 +34,15 @@ async function findClassByName(className: string): Promise<Class | null> {
     return foundClass.rows[0];
 }
 
+async function findUserById(userId: number): Promise<User | null> {
+    const userFound = await connection.query(
+        'SELECT id, name, token, class_id AS classId FROM users WHERE id = $1',
+        [userId],
+    );
+
+    return userFound.rows[0];
+}
+
 /* To avoid ambguity it isnt allowed the same name to be registered, even from different classes */
 async function findUserByName(userName: string): Promise<User | null> {
     const foundUser = await connection.query(
@@ -44,9 +53,20 @@ async function findUserByName(userName: string): Promise<User | null> {
     return foundUser.rows[0];
 }
 
+async function findUserByToken(token: string): Promise<User | null> {
+    const foundUser = await connection.query(
+        'SELECT * FROM users WHERE token = $1',
+        [token],
+    );
+
+    return foundUser.rows[0];
+}
+
 export default {
     createUser,
     createClass,
     findClassByName,
     findUserByName,
+    findUserByToken,
+    findUserById,
 };
