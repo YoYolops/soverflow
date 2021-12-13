@@ -74,6 +74,14 @@ async function getAllTagsFromQuestionId(questionId: number): Promise<Tag[]> {
     return tagsFound.rows;
 }
 
+async function getAllUnansweredQuestions(): Promise<Question[]> {
+    const unansweredQuestions = await connection.query(
+        'SELECT id, student, class, question, submit_at AS "submitAt" FROM questions WHERE answer_id IS NULL;',
+    );
+
+    return unansweredQuestions.rows;
+}
+
 export default {
     registerTag,
     findTagByName,
@@ -83,4 +91,5 @@ export default {
     findAnswerById,
     findUserById,
     getAllTagsFromQuestionId,
+    getAllUnansweredQuestions,
 };

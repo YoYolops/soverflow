@@ -45,7 +45,18 @@ async function searchQuestion(questionId: number)
     return formattedData;
 }
 
+async function searchAllUnansweredQuestions(): Promise<Response.UnansweredQuestion[]> {
+    const unansweredQuestions = await questionRepository.getAllUnansweredQuestions();
+    const formattedUnansweredQuestions = unansweredQuestions.map((question) => ({
+        ...question,
+        submitAt: helper.parseDateToString(question.submitAt),
+    }));
+
+    return formattedUnansweredQuestions;
+}
+
 export default {
     openQuestion,
     searchQuestion,
+    searchAllUnansweredQuestions,
 };

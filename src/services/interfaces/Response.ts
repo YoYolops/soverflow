@@ -10,8 +10,8 @@ export interface UnansweredQuestion {
     question: string,
     student: string,
     class: string,
-    tags: string,
-    answered: boolean,
+    tags?: string,
+    answered?: boolean,
     submitAt: string,
 };
 

@@ -33,7 +33,18 @@ async function getQuestionById(req: Request, res:Response, next: NextFunction) {
     }
 }
 
+async function getUnansweredQuestions(req: Request, res: Response, next: NextFunction) {
+    try {
+        const response = await questionService.searchAllUnansweredQuestions();
+        return res.send(response);
+    } catch (error) {
+        if (helper.errorIsKnown(error)) return res.status(error.statusCode).send(error.message);
+        return next(error);
+    }
+}
+
 export default {
     createQuestion,
     getQuestionById,
+    getUnansweredQuestions,
 };
