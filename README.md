@@ -6,8 +6,8 @@
   ![total lines](https://img.shields.io/tokei/lines/github/YoYolops/soverflow) ![last commit](https://img.shields.io/github/last-commit/YoYolops/soverflow?style=flat-square) ![issues](https://img.shields.io/github/package-json/v/YoYolops/soverflow?style=flat-square)
 
 <p align="center" >
-  Soverflow é uma aplicação backend que gerencia e manipula os dados de um sistema de perguntas e respostas. Onde qualquer pode mandar uma pergunta,
-  sem necessidade de cadastro prévio. Cada pergunta é categorizada em um sistema de tags, e pode ser respondidos por outros usuários. Para garantir a
+  Soverflow é uma aplicação backend que gerencia e manipula os dados de um sistema de perguntas e respostas. Onde qualquer um pode mandar uma pergunta,
+  sem necessidade de cadastro prévio. Cada pergunta é categorizada em um sistema de tags, e pode ser respondida por outros usuários. Para garantir a
   a confiabilidade, todos os respondentes precisam se cadastrar na plataforma através dos endpoints apropriados.
 </p>
 
